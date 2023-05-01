@@ -1,17 +1,16 @@
 {
+  "author": "Will Barouch",
+  "repoUrl":"https://github.com/WillBarouch/RemnoteGPTCopilot",
+  "name": "GPTCopilot",
+  "description": "Acess to the OpenAI chat completetion API within remnote.",
+  "enableOnMobile": false,
+  "id": "WillBarouch-u9r5smv",
   "manifestVersion": 1,
-  "id": "plugin_template",
-  "name": "Plugin Template",
-  "author": "remnote",
-  "repoUrl": "",
   "version": {
     "major": 0,
     "minor": 0,
     "patch": 1
   },
-  "theme": [],
-  "enableOnMobile": false,
-  "description": "",
   "requestNative": false,
   "requiredScopes": [
     {

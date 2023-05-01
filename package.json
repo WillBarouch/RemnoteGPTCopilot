@@ -11,7 +11,10 @@
   "dependencies": {
     "@remnote/plugin-sdk": "^0.0.18",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-dom": "^17.0.2",
+    "react-markdown": "^8.0.7",
+    "react-syntax-highlighter": "^15.5.0"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
