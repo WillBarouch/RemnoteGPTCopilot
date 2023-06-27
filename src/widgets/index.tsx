@@ -3,7 +3,6 @@ import '../style.css';
 import '../App.css';
 
 async function onActivate(plugin: ReactRNPlugin) {
-  // Register settings
 
   await plugin.app.registerWidget(
     'Chatbot',
@@ -17,6 +16,12 @@ async function onActivate(plugin: ReactRNPlugin) {
       widgetTabIcon: "https://seeklogo.com/images/C/chatgpt-logo-02AFA704B5-seeklogo.com.png",
     },
   );
+
+  await plugin.settings.registerStringSetting({
+    id: "apiKey",
+    title: "Enter your OpenAI API key",
+    defaultValue: "sk-",
+  });
 }
 
 async function onDeactivate(_: ReactRNPlugin) {}

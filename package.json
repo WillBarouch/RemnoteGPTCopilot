@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@remnote/plugin-sdk": "^0.0.18",
+    "esbuild": "^0.14.48",
+    "openai": "^3.3.0",
     "react": "^17.0.2",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^17.0.2",
@@ -20,7 +22,9 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
     "@types/node": "^18.0.3",
     "@types/react": "^17.0.2",
+    "@types/react-copy-to-clipboard": "^5.0.4",
     "@types/react-dom": "^17.0.2",
+    "@types/react-syntax-highlighter": "^15.5.7",
     "autoprefixer": "^10.4.7",
     "bestzip": "^2.2.1",
     "concurrently": "^7.2.2",

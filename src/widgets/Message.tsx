@@ -7,11 +7,18 @@ import {nord} from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 interface IMessage {
-  text: string;
-  isUser: boolean;
+  content: string;
+  role: string;
 }
 
-function Message({ isUser, text }: IMessage) {
+function Message({ message }: { message: IMessage }) {
+  const isAssistant = message.role === "assistant";
+  const isUser = message.role === "user";
+
+  if (!isAssistant && !isUser) {
+    return null;
+  }
+
   return (
     <div
       className={
@@ -25,7 +32,7 @@ function Message({ isUser, text }: IMessage) {
         <p className="text-sm pl-2 text-nord6">{isUser ? "Will Barouch" : "GPTCopilot"}</p>
       </div>
       <ReactMarkdown
-        children={text}
+        children={message.content}
         components={{
           code({node, inline, className, children, ...props}) {
             const [copied, setCopied] = useState(false);
@@ -81,7 +88,7 @@ function Message({ isUser, text }: IMessage) {
                 </CopyToClipboard>
                 <SyntaxHighlighter
                   {...props}
-                  children={String(children).replace(/\n$/, '')}
+                  children={String(children).replace(/\n```/, '')}
                   style={nord}
                   language={match[1]}
                   PreTag="div"

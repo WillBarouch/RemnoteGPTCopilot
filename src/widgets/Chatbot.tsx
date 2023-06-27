@@ -1,31 +1,60 @@
-import { renderWidget } from "@remnote/plugin-sdk";
+import { renderWidget, ReactRNPlugin, useTracker } from "@remnote/plugin-sdk";
 import React, { useState } from "react";
 import Message from "./Message";
-import '../style.css';
-import '../App.css';
+import "../style.css";
+import "../App.css";
 
 interface IMessage {
-  text: string;
-  isUser: boolean;
+  content: string;
+  role: string;
 }
 
 function MyWidget() {
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const apiKey = useTracker(
+    async (reactivePlugin) => await reactivePlugin.settings.getSetting("apiKey"),
+    []
+  );
 
-  const sendMessage = (text: string): void => {
-    const newMessages = [...messages, { text, isUser: true }];
-    setTimeout(() => {
-      setMessages([
-        ...newMessages,
-        { text: `Here is some python code:
+  const [messages, setMessages] = useState<IMessage[]>([
+    { content: "You are RemnoteGPT, an AI designed to help write notes and create flashcards", role: "system" },
+  ]);
 
-~~~python
-for i in range(1, 11):
-    sum += i
-~~~
-`, isUser: false},
-      ]);
-    }, 1000);
+  const sendMessage = async (text: string) => {
+    if (text.length < 1) {
+      return;
+    }
+
+    const userMessage: IMessage = { content: text, role: "user" };
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          messages: [...newMessages], // Include the full conversation history
+          model: "gpt-3.5-turbo",
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // Add the message to the conversation
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { content: data.choices[0].message.content, role: "assistant" },
+        ]);
+      } else {
+        console.error(response);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
   };
 
   return (
@@ -33,7 +62,7 @@ for i in range(1, 11):
       <div className="flex-1 overflow-y-scroll">
         {messages.map((message, index) => (
           <div className="clearfix" key={index}>
-            <Message isUser={message.isUser} text={message.text} />
+            <Message message={message} />
           </div>
         ))}
       </div>
